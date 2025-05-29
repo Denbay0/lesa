@@ -1,8 +1,12 @@
 import os
 import cv2
-from fastapi import APIRouter, Depends, HTTPException
+import tempfile
+from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
 from sqlalchemy.orm import Session
 from fastapi.responses import FileResponse
+from fastapi.responses import StreamingResponse
+
+from ultralytics import YOLO
 
 from ..db import SessionLocal
 from ..models import ImageUpload
@@ -58,4 +62,32 @@ def segment_image(image_id: int, session: Session = Depends(get_db)):
         path=processed_path,
         media_type=img_rec.content_type,
         filename=processed_name
+    )
+
+
+@router.post("/file", summary="Сегментировать загруженный файл без ID")
+async def segment_direct(file: UploadFile = File(...)):
+    # 1) Сохраним временно на диск (Ultralytics требует путь или np.ndarray)
+    suffix = os.path.splitext(file.filename)[1]
+    with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
+        tmp.write(await file.read())
+        tmp_path = tmp.name
+
+    # 2) Прогоним модель
+    results = model(tmp_path)
+    r0 = results[0]
+
+    # 3) Получим изображение с наложенными рамками/маской
+    annotated = r0.plot()  # numpy ndarray (BGR)
+    os.remove(tmp_path)
+
+    # 4) Сохраним в другой temp-файл для отдачи
+    is_success, buffer = cv2.imencode(suffix, annotated)
+    if not is_success:
+        raise HTTPException(500, "Не удалось закодировать результат")
+
+    return StreamingResponse(
+        content=buffer.tobytes(),
+        media_type=file.content_type,
+        headers={"Content-Disposition": f"attachment; filename=segmented{suffix}"}
     )

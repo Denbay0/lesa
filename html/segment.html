@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Анализ снимка – ФОРСЭТ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Montserrat','Arial',sans-serif; }
+    body {
+      background: linear-gradient(135deg,#0d2818,#04471c);
+      color:#fff; min-height:100vh; display:flex; flex-direction:column;
+      padding:20px; position:relative; overflow-x:hidden;
+    }
+    body::before {
+      content:""; position:absolute; inset:0;
+      background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.03)"/></svg>');
+      background-size:cover; z-index:-1;
+    }
+    .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+    .logo img { height:50px; }
+    .back-btn {
+      background:rgba(0,0,0,0.3); color:#fff; padding:10px 20px;
+      border-radius:60px; text-decoration:none; font-weight:600;
+      transition:0.3s; border:2px solid rgba(46,204,113,0.5);
+    }
+    .back-btn:hover { background:rgba(0,0,0,0.5); border-color:#2ecc71; }
+    .content { flex:1; display:flex; flex-direction:column; align-items:center; }
+    .page-title {
+      font-size:2.8rem; font-weight:800; margin-bottom:30px;
+      background:linear-gradient(to right,#2ecc71,#27ae60);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .uploader {
+      display:flex; flex-direction:column; align-items:center; gap:15px;
+    }
+    .upload-btn {
+      background:rgba(0,0,0,0.3); color:#fff; padding:12px 30px;
+      border-radius:60px; font-weight:600; cursor:pointer;
+      border:2px solid rgba(46,204,113,0.5); transition:0.3s;
+    }
+    .upload-btn:hover { background:rgba(0,0,0,0.5); border-color:#2ecc71; }
+    #preview, #result {
+      max-width:80vw; max-height:50vh; border-radius:10px; margin-top:20px;
+      box-shadow:0 5px 15px rgba(0,0,0,0.3);
+    }
+    .footer { margin-top:auto; text-align:center; font-size:0.9rem; color:rgba(255,255,255,0.5); }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <img src="images/logoforset.png" alt="ФОРСЭТ">
+    </div>
+    <a href="index.html" class="back-btn">&larr; На главную</a>
+  </div>
+  
+  <div class="content">
+    <h1 class="page-title">Анализ снимка</h1>
+    
+    <div class="uploader">
+      <input type="file" id="file-input" accept="image/*" style="display:none">
+      <div id="upload-btn" class="upload-btn">Выбрать фото</div>
+      <img id="preview" src="" alt="Предпросмотр" style="display:none">
+      <div id="process-btn" class="upload-btn" style="display:none">Запустить анализ</div>
+      <img id="result" src="" alt="Результат" style="display:none">
+    </div>
+  </div>
+  
+  <div class="footer">&copy; 2023 ООО "ФОРСЭТ"</div>
+  
+  <script src="../js/segment.js"></script>
+</body>
+</html>
