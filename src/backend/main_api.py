@@ -2,7 +2,7 @@
 
 from fastapi import FastAPI
 from .db import Base, engine
-from .routers import legal, images
+from .routers import legal, images, segmentation
 
 # (для разработки автоматически создаём таблицы)
 Base.metadata.create_all(bind=engine)
@@ -12,3 +12,4 @@ app = FastAPI(title="FORSET Backend")
 # Регистрируем роуты
 app.include_router(legal.router)
 app.include_router(images.router)
+app.include_router(segmentation.router)
