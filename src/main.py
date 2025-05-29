@@ -1,11 +1,10 @@
-from fastapi import FastAPI
-from .db import Base, engine
-from .routers import legal, images
+# src/main.py
 
-# создаём таблицы (для dev)
-Base.metadata.create_all(bind=engine)
+import uvicorn
 
-app = FastAPI(title="FORSET Backend")
-
-app.include_router(legal.router)
-app.include_router(images.router)
+if __name__ == "__main__":
+    uvicorn.run(
+        "backend.main_api:app",  # импортное имя вашего FastAPI-приложения
+        host="0.0.0.0",
+        port=8000,
+    )
