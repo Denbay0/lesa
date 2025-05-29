@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ПРЕколисты - ФОРСЭТ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0d2818 0%, #04471c 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.03)"/></svg>');
+            background-size: cover;
+            z-index: -1;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+        }
+        
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+        
+        .content {
+            max-width: 800px;
+            padding: 40px;
+            z-index: 1;
+        }
+        
+        .team-name {
+            font-size: 4.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(46, 204, 113, 0.5);
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(46, 204, 113, 0.3); }
+            to { text-shadow: 0 0 30px rgba(46, 204, 113, 0.8), 0 0 40px rgba(46, 204, 113, 0.5); }
+        }
+        
+        .case-description {
+            font-size: 1.8rem;
+            line-height: 1.6;
+            margin-bottom: 60px;
+            color: #ecf0f1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+        
+        .main-btn {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            padding: 20px 50px;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.4s ease;
+            border: 2px solid rgba(46, 204, 113, 0.5);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .main-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(46, 204, 113, 0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+        
+        .main-btn:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
+            border-color: #2ecc71;
+        }
+        
+        .main-btn:hover::before {
+            left: 100%;
+        }
+        
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .team-name {
+                font-size: 2.8rem;
+                letter-spacing: 4px;
+            }
+            
+            .case-description {
+                font-size: 1.4rem;
+            }
+            
+            .main-btn {
+                padding: 16px 40px;
+                font-size: 1.1rem;
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .buttons-container {
+                gap: 20px;
+            }
+            
+            .logo {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .logo img {
+                height: 50px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .team-name {
+                font-size: 2.2rem;
+                letter-spacing: 2px;
+            }
+            
+            .case-description {
+                font-size: 1.2rem;
+                margin-bottom: 40px;
+            }
+            
+            .logo img {
+                height: 40px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="logo">
+        <img src="images/logoforset.png" alt="ФОРСЭТ">
+    </div>
+    
+    <div class="content">
+        <h1 class="team-name">ПРЕколисты</h1>
+        <p class="case-description">Наш кейс: Анализ лесного массива со спутников и беспилотников с использованием ИИ</p>
+        
+        <div class="buttons-container">
+            <a href="map.html" class="main-btn">Карта лесных массивов</a>
+            <a href="products.html" class="main-btn">Продукты и услуги</a>
+        </div>
+    </div>
+    
+    <div class="footer">
+        &copy; 2023 ООО "ФОРСЭТ"
+    </div>
+</body>
+</html>

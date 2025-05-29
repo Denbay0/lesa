@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Продукты и услуги - ФОРСЭТ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0d2818 0%, #04471c 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.03)"/></svg>');
+            background-size: cover;
+            z-index: -1;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 40px;
+        }
+        
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+        
+        .back-btn {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.4s ease;
+            border: 2px solid rgba(46, 204, 113, 0.5);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-btn:hover {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: #2ecc71;
+            transform: translateY(-3px);
+        }
+        
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            z-index: 1;
+        }
+        
+        .page-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .service-card {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 20px;
+            padding: 40px 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(46, 204, 113, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(46, 204, 113, 0.4);
+        }
+        
+        .service-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+        }
+        
+        .service-icon {
+            font-size: 3.5rem;
+            color: #2ecc71;
+            margin-bottom: 25px;
+        }
+        
+        .service-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #2ecc71;
+        }
+        
+        .service-description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #ecf0f1;
+            margin-bottom: 25px;
+        }
+        
+        .features {
+            margin-top: 25px;
+            padding-left: 20px;
+        }
+        
+        .features li {
+            margin-bottom: 12px;
+            position: relative;
+            list-style: none;
+        }
+        
+        .features li::before {
+            content: "✓";
+            color: #2ecc71;
+            font-weight: bold;
+            position: absolute;
+            left: -25px;
+        }
+        
+        .contact-block {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 60px auto;
+            max-width: 800px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(46, 204, 113, 0.2);
+        }
+        
+        .contact-title {
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            color: #2ecc71;
+        }
+        
+        .contact-text {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+        
+        .contact-btn {
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            color: white;
+            padding: 16px 50px;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+        
+        .contact-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
+        }
+        
+        .footer {
+            margin-top: auto;
+            padding-top: 40px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+            
+            .service-card {
+                padding: 30px 20px;
+            }
+            
+            .service-title {
+                font-size: 1.6rem;
+            }
+            
+            .logo img {
+                height: 40px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .contact-block {
+                padding: 30px 20px;
+            }
+            
+            .contact-title {
+                font-size: 1.8rem;
+            }
+            
+            .logo img {
+                height: 35px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="images/logoforset.png" alt="ФОРСЭТ">
+        </div>
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> На главную
+        </a>
+    </div>
+    
+    <div class="content">
+        <h1 class="page-title">Наши продукты и услуги</h1>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-satellite"></i>
+                </div>
+                <h2 class="service-title">Спутниковый мониторинг</h2>
+                <p class="service-description">
+                    Анализ лесных массивов с использованием данных спутникового наблюдения. 
+                    Высокоточное обнаружение изменений лесного покрова, оценка состояния лесов 
+                    и выявление проблемных зон.
+                </p>
+                <ul class="features">
+                    <li>Ежедневное обновление данных</li>
+                    <li>Покрытие больших территорий</li>
+                    <li>Обнаружение вырубок и пожаров</li>
+                    <li>Оценка состояния растительности</li>
+                </ul>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-drone"></i>
+                </div>
+                <h2 class="service-title">Беспилотная аэрофотосъёмка</h2>
+                <p class="service-description">
+                    Детальное обследование лесных участков с помощью БПЛА. 
+                    Высокодетальная съемка труднодоступных участков леса, 
+                    создание ортофотопланов и 3D-моделей местности.
+                </p>
+                <ul class="features">
+                    <li>Высокое разрешение (до 1 см/пиксель)</li>
+                    <li>Обследование труднодоступных зон</li>
+                    <li>Создание цифровых моделей рельефа</li>
+                    <li>Мониторинг конкретных участков</li>
+                </ul>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h2 class="service-title">ИИ-аналитика лесов</h2>
+                <p class="service-description">
+                    Применение искусственного интеллекта для анализа лесных массивов. 
+                    Автоматическая классификация типов леса, обнаружение болезней деревьев, 
+                    прогнозирование изменений и оценка биоразнообразия.
+                </p>
+                <ul class="features">
+                    <li>Автоматическая классификация видов деревьев</li>
+                    <li>Раннее обнаружение болезней</li>
+                    <li>Прогнозирование развития лесов</li>
+                    <li>Оценка углеродного баланса</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="contact-block">
+            <h2 class="contact-title">Заинтересованы в наших решениях?</h2>
+            <p class="contact-text">
+                Свяжитесь с нами для получения подробной информации о возможностях 
+                наших технологий и индивидуальных решениях для ваших задач.
+            </p>
+            <a href="contact.html" class="contact-btn">
+                <i class="fas fa-envelope"></i> Связаться с нами
+            </a>
+        </div>
+    </div>
+    
+    <div class="footer">
+        &copy; 2023 ООО "ФОРСЭТ" | Проект "ПРЕколисты"
+    </div>
+</body>
+</html>

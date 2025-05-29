@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карта лесных массивов - ФОРСЭТ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0d2818 0%, #04471c 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.03)"/></svg>');
+            background-size: cover;
+            z-index: -1;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+        
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+        
+        .back-btn {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.4s ease;
+            border: 2px solid rgba(46, 204, 113, 0.5);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-btn:hover {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: #2ecc71;
+            transform: translateY(-3px);
+        }
+        
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            z-index: 1;
+            text-align: center;
+        }
+        
+        .page-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .map-container {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 20px;
+            padding: 15px;
+            margin: 30px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(46, 204, 113, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+            height: 70vh;
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+        }
+        
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        
+        #search-input {
+            width: 100%;
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: none;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1.1rem;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(46, 204, 113, 0.5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        #search-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        #search-input:focus {
+            outline: none;
+            border-color: #2ecc71;
+            background: rgba(0, 0, 0, 0.4);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: rgba(46, 204, 113, 0.2);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(46, 204, 113, 0.5);
+            cursor: pointer;
+        }
+        
+        .control-btn:hover {
+            background: rgba(46, 204, 113, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .footer {
+            margin-top: auto;
+            padding-top: 30px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+            
+            .map-container {
+                height: 60vh;
+            }
+            
+            .logo img {
+                height: 40px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .map-container {
+                height: 50vh;
+                padding: 10px;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .controls {
+                gap: 15px;
+            }
+            
+            .control-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .logo img {
+                height: 35px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="images/logoforset.png" alt="ФОРСЭТ">
+        </div>
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> На главную
+        </a>
+    </div>
+    
+    <div class="content">
+        <h1 class="page-title">Карта лесных массивов</h1>
+        
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Поиск лесного массива или местности...">
+        </div>
+        
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+        
+        <div class="controls">
+            <button id="export-btn" class="control-btn">
+                <i class="fas fa-download"></i> Экспорт данных
+            </button>
+            <button id="satellite-btn" class="control-btn">
+                <i class="fas fa-satellite"></i> Спутниковый вид
+            </button>
+        </div>
+    </div>
+    
+    <div class="footer">
+        &copy; 2023 ООО "ФОРСЭТ" | Проект "ПРЕколисты"
+    </div>
+
+    <!-- Подключаем API Яндекс Карт -->
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_api_ключ&lang=ru_RU" type="text/javascript"></script>
+    
+    <script>
+        // Инициализация карты
+        ymaps.ready(init);
+        
+        let map, currentPlacemark, searchControl;
+        let isSatelliteView = false;
+        
+        function init() {
+            // Создаем карту
+            map = new ymaps.Map("map", {
+                center: [55.76, 37.64], // Москва по умолчанию
+                zoom: 10,
+                controls: []
+            });
+            
+            // Добавляем элементы управления
+            map.controls.add('zoomControl', {
+                position: {right: 10, top: 50}
+            });
+            
+            // Инициализируем поиск
+            searchControl = new ymaps.control.SearchControl({
+                options: {
+                    provider: 'yandex#search',
+                    noPlacemark: true,
+                    placeholderContent: 'Поиск лесного массива',
+                    resultsPerPage: 5
+                }
+            });
+            
+            map.controls.add(searchControl, {
+                float: 'none',
+                position: {top: 10, left: 100, right: 100}
+            });
+            
+            // Обработка результатов поиска
+            searchControl.events.add('resultselect', function (e) {
+                const index = e.get('index');
+                const results = searchControl.getResultsArray();
+                
+                if (results[index]) {
+                    // Удаляем предыдущую метку
+                    if (currentPlacemark) {
+                        map.geoObjects.remove(currentPlacemark);
+                    }
+                    
+                    // Создаем новую метку
+                    currentPlacemark = new ymaps.Placemark(
+                        results[index].geometry.getCoordinates(), 
+                        {iconContent: 'Лесной массив'},
+                        {preset: 'islands#greenForestIcon'}
+                    );
+                    
+                    map.geoObjects.add(currentPlacemark);
+                    
+                    // Центрируем карту
+                    map.setCenter(results[index].geometry.getCoordinates(), 14);
+                }
+            });
+            
+            // Добавляем обработчик для поля поиска
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchControl.search(this.value);
+                }
+            });
+            
+            // Добавляем кнопку спутникового вида
+            document.getElementById('satellite-btn').addEventListener('click', toggleSatelliteView);
+            
+            // Добавляем обработчик для экспорта
+            document.getElementById('export-btn').addEventListener('click', function() {
+                alert('Экспорт данных о лесных массивах начат. Данные будут отправлены на ваш email.');
+            });
+            
+            // Добавляем лесные массивы (пример)
+            addForestAreas();
+        }
+        
+        function toggleSatelliteView() {
+            isSatelliteView = !isSatelliteView;
+            const button = document.getElementById('satellite-btn');
+            
+            if (isSatelliteView) {
+                map.setType('yandex#satellite');
+                button.innerHTML = '<i class="fas fa-map"></i> Обычная карта';
+            } else {
+                map.setType('yandex#map');
+                button.innerHTML = '<i class="fas fa-satellite"></i> Спутниковый вид';
+            }
+        }
+        
+        function addForestAreas() {
+            // Примеры лесных массивов (координаты)
+            const forests = [
+                {name: "Лосиный Остров", coords: [55.877, 37.784]},
+                {name: "Битцевский лес", coords: [55.597, 37.552]},
+                {name: "Серебряный бор", coords: [55.778, 37.443]},
+                {name: "Кузьминский лесопарк", coords: [55.693, 37.786]},
+                {name: "Тропарёвский лесопарк", coords: [55.645, 37.472]}
+            ];
+            
+            // Добавляем лесные массивы на карту
+            forests.forEach(forest => {
+                const placemark = new ymaps.Placemark(
+                    forest.coords, 
+                    {
+                        iconContent: forest.name,
+                        hintContent: 'Лесной массив',
+                        balloonContent: `<b>${forest.name}</b><br>Здоровье леса: 85%`
+                    },
+                    {
+                        preset: 'islands#greenForestIcon',
+                        iconColor: '#2ecc71'
+                    }
+                );
+                
+                map.geoObjects.add(placemark);
+            });
+        }
+    </script>
+</body>
+</html>
